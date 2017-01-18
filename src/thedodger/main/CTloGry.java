@@ -14,13 +14,12 @@ import javax.swing.JLabel;
  */
 public class CTloGry extends JLabel {
 
-    //private static String tlo = "droga.png";
-
+    /** Konstruktor 
+    @param tlo Ścieżka do obrazu tła
+    */
     public CTloGry(String tlo) {
         setIcon(new ImageIcon("src/images/" + tlo));
     }
 
-//    public static void zmienTlo(String nazwa) {
-//        tlo = nazwa;
-//    }
+
 }

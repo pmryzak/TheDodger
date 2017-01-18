@@ -6,69 +6,77 @@
 package thedodger.main;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- *
+ * Klasa panelu ustawień
+ * Umożliwia zmianę pojazdu, którym sterujemy
  * @author Patryk
  */
 public class CUstawienia extends JPanel{
     
+    //       Dodawanie przycisków
     JButton bPrev = new JButton("Poprzedni");
     JButton bNext = new JButton("Następny");
     JButton bBack = new JButton("Powrót");
     
+    /** Konstruktor zakładki ustawień */
     public CUstawienia(){
         setSize(300,400);
         setVisible(true);
         setLayout(null);
         bPrev.setBounds(0,0,150,40);
         bNext.setBounds(150,0,150,40);
-        bBack.setBounds(-2,327,300,40);
+        bBack.setBounds(-2,332,300,40);
        
         this.add(bPrev);
         this.add(bNext);
         this.add(bBack);
         
-        bPrev.addActionListener(new ActionListener() { //przycisk Poprzedni
+        //Działanie przycisku "Poprzedni"
+        bPrev.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (nr>1) nr--; //zmiana nr auta
-                ikona=new ImageIcon("src/images/car"+nr+".png");
+                if (nr>1) nr--;                                                 //Zmiana numeru grafiki wyświetlanego auta
+                ikona=new ImageIcon("src/images/vehicles/v"+nr+".png");         //Aktualizacja grafiki
             }
         });
-        bNext.addActionListener(new ActionListener() { //przycisk Następny
+        //Działanie przycisku "Następny"
+        bNext.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (nr<8) nr++; //zmiana nr auta
-                ikona=new ImageIcon("src/images/car"+nr+".png");
+                if (nr<9) nr++;                                                //Zmiana numeru grafiki wyświetlanego auta
+                ikona=new ImageIcon("src/images/vehicles/v"+nr+".png");         //Aktualizacja grafiki
+            }
+        });
+        //Działanie przycisku "Powrót"
+        bBack.addActionListener(new ActionListener() { 
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                CLayout.zmianaKarty("1");                                       //Zmiana karty layoutu na menu
+                CRozgrywka.ZmianaAuta(nr);                                      //Zmiana grafiki pojazdu, którym gramy.
+                 if (nr<9) { CDodger.width=60; CDodger.height=100; }            //Zmiana informacji o wymiarach naszego pojazdu
+                 
+                 else {CDodger.width=50; CDodger.height=100;}
+                
             }
         });
         
-        bBack.addActionListener(new ActionListener() { //przycisk Powrót(do menu)
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                CLayout.zmianaKarty("1");
-                CRozgrywka.ZmianaAuta(nr);
-            }
-        });
-        
-        //Image auto = ikona.getImage();
+       
     }
-    private int nr=5;
+    private int nr=5;                                                           //Numer grafiki wyświetlanego pojazdu
     private Image dbImage;
-    private Graphics dbg; //podwójne buforowanie
-    //Image auto = ikona.getImage();
-    ImageIcon ikona=new ImageIcon("src/images/car"+nr+".png");
+    private Graphics dbg; //Podwójne buforowanie
+  
+    ImageIcon ikona=new ImageIcon("src/images/Vehicles/v"+nr+".png");
     static Image obrazek;
-    
+    /**Metoda rysująca */
     @Override
     public void paint(Graphics g){
         super.paint(g);
@@ -76,28 +84,20 @@ public class CUstawienia extends JPanel{
         dbg=dbImage.getGraphics();
         paintComponent(dbg);
         g.drawImage(dbImage,0,0,this);
-        //g.drawImage(tlo,0,0,this);
         repaint();
         
     }
+  /** 
+    *Metoda rysująca modele pojazdów do sterowania
+    *   Zależnie od rozmiarów pojazdu, grafika jest inaczej skalowana
+    **/
     @Override
     public void paintComponent(Graphics g){
         super.paintComponents(g);
+
+        if (nr < 9 )    g.drawImage(ikona.getImage(),70,45,160,270,this);
+        else            g.drawImage(ikona.getImage(),80,45,140,275,this);
         
-        
-      // yourImage.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
-        ikona.getImage().getScaledInstance(120,200, Image.SCALE_DEFAULT);
-        //g.drawImage(ikona.,50,50,this);
-        g.drawImage(ikona.getImage(),70,45,160,270,this);
-        
-        
-       
-        
-        
-        
-        
-        //g.drawOval(100, 100, 50, 50);
-       //super.paint(g);
         repaint();
     }
     
